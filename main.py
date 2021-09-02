@@ -2,10 +2,11 @@ import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import videoPage
-import creatorPage
+import channelPage
+import dbAdapter
 
 vs = videoPage.videoScraper()
-cs = creatorPage.creatorScraper()
+cs = channelPage.channelScraper()
 
 # Scrape some of the creators on YouTube main page
 def mainPageScraper():
@@ -33,8 +34,11 @@ def mainPageScraper():
     return ret
 
 def main():
-    initialLinksNum = mainPageScraper()
-    print('Found ' + str(initialLinksNum) + ' initial links.')
+    #dbAdapter.connectDB()
+    #initialLinksNum = mainPageScraper()
+    #print('Found ' + str(initialLinksNum) + ' initial links.')
+    #vs.scrapeVideo('8NK1I6S_vFs')
+    cs.scrapeChannel('https://www.youtube.com/user/LinusTechTips')
 
 if __name__ == "__main__":
     main()
