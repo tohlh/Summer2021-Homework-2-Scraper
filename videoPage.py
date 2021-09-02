@@ -10,6 +10,8 @@ videoData = {
     'description': '',
     'videoThumbnail': '',
     'interactionCount': 0,
+    'likeCount': 0,
+    'dislikeCount': 0,
     'uploadDate': dt.datetime(2021, 1, 1),
     'datePublished': dt.datetime(2021, 1, 1),
     'channelID': '',
@@ -40,6 +42,11 @@ class videoScraper:
         datePublished = driver.find_element_by_xpath('//*[@id="watch7-content"]/meta[14]').get_attribute('content').split('-')
         videoData['uploadDate'] = dt.datetime(int(uploadDate[0]), int(uploadDate[1]), int(uploadDate[2]))
         videoData['datePublished'] = dt.datetime(int(datePublished[0]), int(datePublished[1]), int(datePublished[2]))
+
+        likeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[1]/a/yt-formatted-string').get_attribute('aria-label')
+        dislikeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[2]/a/yt-formatted-string').get_attribute('aria-label')
+        videoData['likeCount'] = int(likeCount.replace(',', '').replace(' likes', ''))
+        videoData['dislikeCount'] = int(dislikeCount.replace(',', '').replace(' dislikes', ''))
 
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         description_div = soup.find('div', {'id': 'description', 'slot': 'content', 'class': 'style-scope ytd-video-secondary-info-renderer'})

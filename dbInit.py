@@ -28,6 +28,8 @@ def createTables():
         description TEXT NOT NULL,
         videoThumbnail TEXT NOT NULL,
         interactionCount INT NOT NULL,
+        likeCount INT NOT NULL,
+        dislikeCount INT NOT NULL,
         uploadDate TIMESTAMP NOT NULL,
         datePublished TIMESTAMP NOT NULL,
         channelID TEXT NOT NULL,
