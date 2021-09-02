@@ -48,13 +48,15 @@ def createTables():
     cursor.execute(create_table_query)
     connection.commit()
 
-    create_table_query = '''CREATE TABLE videoQueue
-        (id TEXT PRIMARY KEY NOT NULL); '''
+    create_table_query = '''CREATE TABLE videoqueue
+        (id TEXT PRIMARY KEY NOT NULL,
+        scraped BOOL NOT NULL); '''
     cursor.execute(create_table_query)
     connection.commit()
 
-    create_table_query = '''CREATE TABLE channelQueue
-        (id TEXT PRIMARY KEY NOT NULL); '''
+    create_table_query = '''CREATE TABLE channelqueue
+        (id TEXT PRIMARY KEY NOT NULL,
+        scraped BOOL NOT NULL); '''
     cursor.execute(create_table_query)
     connection.commit()
 
