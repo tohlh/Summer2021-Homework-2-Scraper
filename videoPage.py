@@ -1,4 +1,5 @@
 import time
+import datetime as dt
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -9,8 +10,8 @@ videoData = {
     'description': '',
     'videoThumbnail': '',
     'interactionCount': 0,
-    'uploadDate': '',
-    'datePublished': '',
+    'uploadDate': dt.datetime(2021, 1, 1),
+    'datePublished': dt.datetime(2021, 1, 1),
     'channelID': '',
     'genre': '',
     'comments': []
@@ -32,10 +33,13 @@ class videoScraper:
         videoData['title'] = driver.find_element_by_xpath('//*[@id="watch7-content"]/meta[1]').get_attribute('content')
         videoData['videoThumbnail'] = driver.find_element_by_xpath('//*[@id="watch7-content"]/link[2]').get_attribute('content')
         videoData['interactionCount'] = driver.find_element_by_xpath('//*[@id="watch7-content"]/meta[13]').get_attribute('content')
-        videoData['uploadDate'] = driver.find_element_by_xpath('//*[@id="watch7-content"]/meta[15]').get_attribute('content')
-        videoData['datePublished'] = driver.find_element_by_xpath('//*[@id="watch7-content"]/meta[14]').get_attribute('content')
         videoData['genre'] = driver.find_element_by_xpath('//*[@id="watch7-content"]/meta[16]').get_attribute('content')
         videoData['channelID'] = driver.find_element_by_xpath('//*[@id="watch7-content"]/meta[4]').get_attribute('content')
+
+        uploadDate = driver.find_element_by_xpath('//*[@id="watch7-content"]/meta[15]').get_attribute('content').split('-')
+        datePublished = driver.find_element_by_xpath('//*[@id="watch7-content"]/meta[14]').get_attribute('content').split('-')
+        videoData['uploadDate'] = dt.datetime(int(uploadDate[0]), int(uploadDate[1]), int(uploadDate[2]))
+        videoData['datePublished'] = dt.datetime(int(datePublished[0]), int(datePublished[1]), int(datePublished[2]))
 
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         description_div = soup.find('div', {'id': 'description', 'slot': 'content', 'class': 'style-scope ytd-video-secondary-info-renderer'})
@@ -57,3 +61,6 @@ class videoScraper:
         for x in videos:
             if (x.get_attribute('href') != None):
                 videoLinksDump.write(str(x.get_attribute('href')) + '\n')
+
+        tempDump = open('tempDump.txt', 'w')
+        tempDump.write(str(videoData))

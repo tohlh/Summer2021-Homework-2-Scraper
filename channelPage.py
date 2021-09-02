@@ -1,12 +1,28 @@
+import datetime as dt
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+
+months = {
+    'Jan': 1,
+    'Feb': 2,
+    'Mar': 3,
+    'Apr': 4,
+    'May': 5,
+    'Jun': 6,
+    "Jul": 7,
+    'Aug': 8,
+    'Sep': 9,
+    'Oct': 10,
+    'Nov': 11,
+    'Dec': 12
+}
 
 channelData = {
     'id': '',
     'name': '',
     'profilePic': '',
     'description': '',
-    'joinedDate': '',
+    'joinedDate': dt.datetime(2021, 1, 1),
     'totalViews': '',
     'subscriberCount': '',
     'videos': []
@@ -25,11 +41,15 @@ class channelScraper:
         channelData['name'] = driver.find_element_by_xpath('//*[@id="channel-name"]').text
         channelData['profilePic'] = driver.find_element_by_xpath('//*[@id="img"]').get_attribute('src')
         channelData['description'] = driver.find_element_by_xpath('//*[@id="description"]').text
-        channelData['joinedDate'] = driver.find_element_by_xpath('//*[@id="right-column"]/yt-formatted-string[2]/span[2]').text
+
         totalViews = driver.find_element_by_xpath('//*[@id="right-column"]/yt-formatted-string[3]').text
-        channelData['totalViews'] = int(totalViews[0:-6].replace(',', ''))
         subscriberCount = driver.find_element_by_xpath('//*[@id="subscriber-count"]').text
+        channelData['totalViews'] = int(totalViews[0:-6].replace(',', ''))
         channelData['subscriberCount'] = subscriberCount.replace(' subscribers', '')
+
+        joinedDate = driver.find_element_by_xpath('//*[@id="right-column"]/yt-formatted-string[2]/span[2]').text
+        dateTime = joinedDate.replace(',', '').split(' ')
+        channelData['joinedDate'] = dt.datetime(int(dateTime[2]), months[dateTime[0]], int(dateTime[1]))
 
         # Videos page
         videosUrl = baseUrl + '/videos'
