@@ -45,8 +45,7 @@ class channelScraper:
         driver.get(aboutUrl)
         soup = BeautifulSoup(driver.page_source, 'html.parser')
 
-        id_meta = soup.find('meta', {'itemprop': 'channelId'})
-        channelData['id'] = id_meta['content']
+        channelData['id'] = id
         channelData['name'] = driver.find_element_by_xpath('//*[@id="channel-name"]').text
         channelData['profilePic'] = driver.find_element_by_xpath('//*[@id="img"]').get_attribute('src')
         channelData['description'] = driver.find_element_by_xpath('//*[@id="description"]').text
