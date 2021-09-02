@@ -10,8 +10,8 @@ import dbAdapter
 da = dbAdapter.adapter()
 
 # Scrape some of the channels on YouTube main page
-class mainPage():
-    def scrapeMainPage():
+class mainPageScraper():
+    def scrapeMainPage(self, limit):
         baseUrl = 'https://www.youtube.com'
         chrome_options = Options()
         chrome_options.add_argument("--headless")
@@ -23,16 +23,19 @@ class mainPage():
             driver.execute_script(script)
             time.sleep(1)
 
-        i = 1
+        currChannelLinksNum = da.getTotalChannelsToScrape()
         videoThumbnails = driver.find_elements_by_xpath('//*[@id="text"]/a')
         for x in videoThumbnails:
-            currVideoLink = str(x.get_attribute('href'))
-            if currVideoLink != None and currVideoLink[0:26] == 'https://www.youtube.com/c/':
-                source = requests.get(currVideoLink).text
+            currChannelLink = str(x.get_attribute('href'))
+            if currChannelLink != None and currChannelLink[0:26] == 'https://www.youtube.com/c/' and currChannelLinksNum <= limit:
+                source = requests.get(currChannelLink).text
                 soup = BeautifulSoup(source, 'html.parser')
                 id_meta = soup.find('meta', {'itemprop': 'channelId'})
+                if id_meta == None:
+                    continue
                 id = id_meta['content']
                 da.addChannelToQueue(id)
-                print('Found {0} links.'.format(i))
-                i += 1
+                if currChannelLinksNum != da.getTotalChannelsToScrape():
+                    currChannelLinksNum = da.getTotalChannelsToScrape()
+                print('Found {0} links.'.format(currChannelLinksNum))
                 time.sleep(1)

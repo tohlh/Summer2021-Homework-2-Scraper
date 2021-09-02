@@ -27,10 +27,10 @@ def createTables():
         title TEXT NOT NULL,
         description TEXT NOT NULL,
         videoThumbnail TEXT NOT NULL,
-        interactionCount INT NOT NULL,
-        likeCount INT NOT NULL,
-        dislikeCount INT NOT NULL,
-        uploadDate TIMESTAMP NOT NULL,
+        interactionCount INT8 NOT NULL,
+        likeCount INT8 NOT NULL,
+        dislikeCount INT8 NOT NULL,
+        uploadDate TIMESTAMPTZ NOT NULL,
         datePublished TIMESTAMP NOT NULL,
         channelID TEXT NOT NULL,
         genre TEXT NOT NULL,
@@ -43,7 +43,7 @@ def createTables():
         profilePic TEXT NOT NULL,
         description TEXT NOT NULL,
         joinedDate TIMESTAMP NOT NULL,
-        totalViews INT NOT NULL,
+        totalViews INT8 NOT NULL,
         subscriberCount TEXT NOT NULL,
         videos TEXT []); '''
     cursor.execute(create_table_query)

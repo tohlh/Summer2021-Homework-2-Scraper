@@ -1,6 +1,11 @@
 import datetime as dt
+from pytz import timezone
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import dbAdapter
+
+da = dbAdapter.adapter()
 
 months = {
     'Jan': 1,
@@ -29,7 +34,8 @@ channelData = {
 }
 
 class channelScraper:
-    def scrapeChannel(self, baseUrl):
+    def scrapeChannel(self, id):
+        baseUrl = 'https://www.youtube.com/channel/{0}'.format(id)
         chrome_options = Options()
         chrome_options.add_argument("--headless")
         driver = webdriver.Chrome('./chromedriver', options=chrome_options)
@@ -37,7 +43,10 @@ class channelScraper:
         # About page
         aboutUrl = baseUrl + '/about'
         driver.get(aboutUrl)
-        channelData['id'] = driver.find_element_by_xpath('/html/body/meta[47]').get_attribute('content')
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+
+        id_meta = soup.find('meta', {'itemprop': 'channelId'})
+        channelData['id'] = id_meta['content']
         channelData['name'] = driver.find_element_by_xpath('//*[@id="channel-name"]').text
         channelData['profilePic'] = driver.find_element_by_xpath('//*[@id="img"]').get_attribute('src')
         channelData['description'] = driver.find_element_by_xpath('//*[@id="description"]').text
@@ -49,19 +58,19 @@ class channelScraper:
 
         joinedDate = driver.find_element_by_xpath('//*[@id="right-column"]/yt-formatted-string[2]/span[2]').text
         dateTime = joinedDate.replace(',', '').split(' ')
-        channelData['joinedDate'] = dt.datetime(int(dateTime[2]), months[dateTime[0]], int(dateTime[1]))
+        channelData['joinedDate'] = dt.datetime(int(dateTime[2]), months[dateTime[0]], int(dateTime[1]), tzinfo=timezone('Asia/Kuala_Lumpur'))
 
         # Videos page
+        i = 0
         videosUrl = baseUrl + '/videos'
         driver.get(videosUrl)
         videoLinksDump = open('./videoLinksDump.txt', 'w')
         videos = driver.find_elements_by_xpath('//*[@id="video-title"]')
         for x in videos:
             if (x.get_attribute('href') != None):
-                channelData['videos'].append(str(x.get_attribute('href')).replace('https://www.youtube.com/watch?v=', ''))
+                videoID = str(x.get_attribute('href')).replace('https://www.youtube.com/watch?v=', '')
+                channelData['videos'].append(videoID)
+                da.addVideoToQueue(videoID)
+            
 
-        tempDump = open('tempDump.txt', 'w')
-        tempDump.write(str(channelData))
-
-    def scrapeChannelByID(self, id):
-        self.scrapeChannel('https://www.youtube.com/channel/{0}'.format(id))
+        da.saveChannelData(channelData)
