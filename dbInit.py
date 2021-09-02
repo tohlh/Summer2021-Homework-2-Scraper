@@ -36,7 +36,6 @@ def createTables():
         genre TEXT NOT NULL,
         comments TEXT []); '''
     cursor.execute(create_table_query)
-    connection.commit()
 
     create_table_query = '''CREATE TABLE channels
         (id TEXT PRIMARY KEY NOT NULL,
@@ -48,13 +47,11 @@ def createTables():
         subscriberCount TEXT NOT NULL,
         videos TEXT []); '''
     cursor.execute(create_table_query)
-    connection.commit()
 
     create_table_query = '''CREATE TABLE videoqueue
         (id TEXT PRIMARY KEY NOT NULL,
         scraped BOOL NOT NULL); '''
     cursor.execute(create_table_query)
-    connection.commit()
 
     create_table_query = '''CREATE TABLE channelqueue
         (id TEXT PRIMARY KEY NOT NULL,
