@@ -42,7 +42,7 @@ def createTables():
         name TEXT NOT NULL,
         profilePic TEXT NOT NULL,
         description TEXT NOT NULL,
-        joinedDate TIMESTAMP NOT NULL,
+        joinedDate TIMESTAMPTZ NOT NULL,
         totalViews INT8 NOT NULL,
         subscriberCount TEXT NOT NULL,
         videos TEXT []); '''
