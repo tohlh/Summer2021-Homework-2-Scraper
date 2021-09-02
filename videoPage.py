@@ -55,5 +55,5 @@ class videoScraper:
         videoLinksDump = open('videoLinksDump.txt', 'w')
         videos = driver.find_elements_by_xpath('//*[@id="thumbnail"]')
         for x in videos:
-            if (str(x.get_attribute('href')) != 'None'):
+            if (x.get_attribute('href') != None):
                 videoLinksDump.write(str(x.get_attribute('href')) + '\n')

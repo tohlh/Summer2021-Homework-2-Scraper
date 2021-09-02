@@ -37,7 +37,7 @@ class channelScraper:
         videoLinksDump = open('./videoLinksDump.txt', 'w')
         videos = driver.find_elements_by_xpath('//*[@id="video-title"]')
         for x in videos:
-            if (str(x.get_attribute('href')) != 'None'):
+            if (x.get_attribute('href') != None):
                 channelData['videos'].append(str(x.get_attribute('href')).replace('https://www.youtube.com/watch?v=', ''))
 
         tempDump = open('tempDump.txt', 'w')
