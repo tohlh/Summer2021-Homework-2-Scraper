@@ -63,3 +63,5 @@ class channelScraper:
         tempDump = open('tempDump.txt', 'w')
         tempDump.write(str(channelData))
 
+    def scrapeChannelByID(self, id):
+        self.scrapeChannel('https://www.youtube.com/channel/{0}'.format(id))
