@@ -71,6 +71,8 @@ class channelScraper:
                 videoID = str(x.get_attribute('href')).replace('https://www.youtube.com/watch?v=', '')
                 channelData['videos'].append(videoID)
                 da.addVideoToQueue(videoID)
-            
+                i += 1
+                if i >= 20:
+                    break
 
         da.saveChannelData(channelData)

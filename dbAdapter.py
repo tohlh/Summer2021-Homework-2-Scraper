@@ -64,6 +64,12 @@ class adapter:
         self.connection.commit()
         return self.cursor.fetchone()[0]
 
+    def getScrapedChannelsNum(self):
+        search_query = 'SELECT COUNT (*) FROM channelqueue WHERE scraped=true'
+        self.cursor.execute(search_query)
+        self.connection.commit()
+        return self.cursor.fetchone()[0]
+
     def addVideoToQueue(self, id):
         # First, check if the video is in the queue
         search_query = 'SELECT * FROM videoqueue WHERE id=\'{0}\';'.format(id)
@@ -89,6 +95,7 @@ class adapter:
     def getUnscrapedVideo(self):
         search_query = 'SELECT id FROM videoqueue WHERE scraped=False LIMIT 1;'
         self.cursor.execute(search_query)
+        result = self.cursor.fetchone()
         if result == None:
             return ''
         return result[0]
@@ -103,4 +110,10 @@ class adapter:
     def getTotalVideosToScrape(self):
         search_query = 'SELECT COUNT (*) FROM videoqueue'
         self.cursor.execute(search_query)
+        return self.cursor.fetchone()[0]
+
+    def getScrapedVideosNum(self):
+        search_query = 'SELECT COUNT (*) FROM videoqueue WHERE scraped=true'
+        self.cursor.execute(search_query)
+        self.connection.commit()
         return self.cursor.fetchone()[0]

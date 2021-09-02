@@ -27,7 +27,7 @@ class mainPageScraper():
         videoThumbnails = driver.find_elements_by_xpath('//*[@id="text"]/a')
         for x in videoThumbnails:
             currChannelLink = str(x.get_attribute('href'))
-            if currChannelLink != None and currChannelLink[0:26] == 'https://www.youtube.com/c/' and currChannelLinksNum <= limit:
+            if currChannelLink != None and currChannelLink[0:26] == 'https://www.youtube.com/c/' and currChannelLinksNum < limit:
                 source = requests.get(currChannelLink).text
                 soup = BeautifulSoup(source, 'html.parser')
                 id_meta = soup.find('meta', {'itemprop': 'channelId'})
