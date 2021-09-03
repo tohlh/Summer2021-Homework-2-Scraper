@@ -52,6 +52,7 @@ class adapter:
 
     def saveChannelData(self, data):
         search_query = 'SELECT * FROM channels WHERE id=\'{0}\';'.format(data['id'])
+        self.cursor.execute(search_query)
         result = self.cursor.fetchone()
         if result != None:
             return #already existed
@@ -106,6 +107,7 @@ class adapter:
     
     def saveVideoData(self, data):
         search_query = 'SELECT * FROM videos WHERE id=\'{0}\';'.format(data['id'])
+        self.cursor.execute(search_query)
         result = self.cursor.fetchone()
         if result != None:
             return #already existed
