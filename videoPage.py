@@ -61,13 +61,8 @@ class videoScraper:
         likeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[1]/a/yt-icon-button/button').get_attribute('aria-label')
         dislikeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[2]/a/yt-icon-button/button').get_attribute('aria-label')
         
-        if likeCount == None:
-            likeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[1]/a/yt-formatted-string').text
-        if dislikeCount == None:
-            dislikeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[2]/a/yt-formatted-string').text
-        
-        videoData['likeCount'] = int(likeCount.replace(',', '').replace('like this video along with ', '').replace(' other people', '').replace(' other person', '').replace('No', '0'))
-        videoData['dislikeCount'] = int(dislikeCount.replace(',', '').replace('dislike this video along with ', '').replace(' other people', '').replace(' other person', '').replace('No', '0'))
+        videoData['likeCount'] = int(likeCount.replace(',', '').replace('like this video along with ', '').replace(' other people', '').replace(' other person', '').replace('I like this', '0'))
+        videoData['dislikeCount'] = int(dislikeCount.replace(',', '').replace('dislike this video along with ', '').replace(' other people', '').replace(' other person', '').replace('I dislike this', '0'))
 
         description_div = soup.find('div', {'id': 'description', 'slot': 'content', 'class': 'style-scope ytd-video-secondary-info-renderer'})
         description_formatted = description_div.find('yt-formatted-string')
