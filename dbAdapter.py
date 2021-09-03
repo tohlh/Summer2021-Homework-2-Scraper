@@ -51,6 +51,10 @@ class adapter:
         return result[0]
 
     def saveChannelData(self, data):
+        search_query = 'SELECT * FROM channels WHERE id=\'{0}\';'.format(id)
+        result = self.cursor.fetchone()
+        if result != None:
+            return #already existed
         insert_query = '''INSERT INTO 
                         channels (id, name, profilepic, description, joineddate, totalviews, subscribercount, videos) 
                         values (%s, %s, %s, %s, %s, %s, %s, %s);'''
@@ -93,7 +97,7 @@ class adapter:
         self.connection.commit()
 
     def getUnscrapedVideo(self):
-        search_query = 'SELECT id FROM videoqueue WHERE scraped=False LIMIT 1;'
+        search_query = 'SELECT id FROM videoqueue WHERE scraped=False ORDER BY random() LIMIT 1;'
         self.cursor.execute(search_query)
         result = self.cursor.fetchone()
         if result == None:
@@ -101,6 +105,10 @@ class adapter:
         return result[0]
     
     def saveVideoData(self, data):
+        search_query = 'SELECT * FROM videos WHERE id=\'{0}\';'.format(id)
+        result = self.cursor.fetchone()
+        if result != None:
+            return #already existed
         insert_query = '''INSERT INTO videos (id, title, description, videothumbnail, interactioncount, likecount, dislikecount, uploaddate, datepublished, channelid, genre, comments) 
                         values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'''
         self.cursor.execute(insert_query, (data['id'], data['title'], data['description'], data['videoThumbnail'], data['interactionCount'], data['likeCount'], data['dislikeCount'], data['uploadDate'], data['datePublished'], data['channelID'], data['genre'], data['comments']))
