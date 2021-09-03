@@ -63,7 +63,6 @@ class channelScraper:
         i = 0
         videosUrl = baseUrl + '/videos'
         driver.get(videosUrl)
-        videoLinksDump = open('./videoLinksDump.txt', 'w')
         videos = driver.find_elements_by_xpath('//*[@id="video-title"]')
         for x in videos:
             if (x.get_attribute('href') != None):
