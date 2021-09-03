@@ -58,16 +58,16 @@ class videoScraper:
         videoData['uploadDate'] = dt.datetime(int(uploadDate[0]), int(uploadDate[1]), int(uploadDate[2]), tzinfo=timezone('Asia/Kuala_Lumpur'))
         videoData['datePublished'] = dt.datetime(int(datePublished[0]), int(datePublished[1]), int(datePublished[2]), tzinfo=timezone('Asia/Kuala_Lumpur'))
 
-        likeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[1]/a/yt-formatted-string').get_attribute('aria-label')
-        dislikeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[2]/a/yt-formatted-string').get_attribute('aria-label')
+        likeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[1]/a/yt-icon-button/button').get_attribute('aria-label')
+        dislikeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[2]/a/yt-icon-button/button').get_attribute('aria-label')
         
         if likeCount == None:
             likeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[1]/a/yt-formatted-string').text
         if dislikeCount == None:
             dislikeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[2]/a/yt-formatted-string').text
         
-        videoData['likeCount'] = int(likeCount.replace(',', '').replace(' like', '').replace('s', '').replace('No', '0'))
-        videoData['dislikeCount'] = int(dislikeCount.replace(',', '').replace(' dislike', '').replace('s', '').replace('No', '0'))
+        videoData['likeCount'] = int(likeCount.replace(',', '').replace('like this video along with ', '').replace(' other people', '').replace(' other person', '').replace('No', '0'))
+        videoData['dislikeCount'] = int(dislikeCount.replace(',', '').replace('dislike this video along with ', '').replace(' other people', '').replace(' other person', '').replace('No', '0'))
 
         description_div = soup.find('div', {'id': 'description', 'slot': 'content', 'class': 'style-scope ytd-video-secondary-info-renderer'})
         description_formatted = description_div.find('yt-formatted-string')
