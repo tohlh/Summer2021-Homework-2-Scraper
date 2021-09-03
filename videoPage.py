@@ -60,8 +60,14 @@ class videoScraper:
 
         likeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[1]/a/yt-formatted-string').get_attribute('aria-label')
         dislikeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[2]/a/yt-formatted-string').get_attribute('aria-label')
-        videoData['likeCount'] = int(likeCount.replace(',', '').replace(' likes', ''))
-        videoData['dislikeCount'] = int(dislikeCount.replace(',', '').replace(' dislikes', ''))
+        
+        if likeCount == None:
+            likeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[1]/a/yt-formatted-string').text
+        if dislikeCount == None:
+            dislikeCount = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[2]/a/yt-formatted-string').text
+        
+        videoData['likeCount'] = int(likeCount.replace(',', '').replace(' like', '').replace('s', '').replace('No', '0'))
+        videoData['dislikeCount'] = int(dislikeCount.replace(',', '').replace(' dislike', '').replace('s', '').replace('No', '0'))
 
         description_div = soup.find('div', {'id': 'description', 'slot': 'content', 'class': 'style-scope ytd-video-secondary-info-renderer'})
         description_formatted = description_div.find('yt-formatted-string')
@@ -76,4 +82,5 @@ class videoScraper:
             commentContents = x.find('yt-formatted-string', {'class': 'style-scope ytd-comment-renderer', 'id': 'content-text'})
             videoData['comments'].append(commentContents.get_text())
 
+        driver.quit()
         da.saveVideoData(videoData)
