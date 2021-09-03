@@ -74,4 +74,6 @@ class channelScraper:
                 if i >= 20:
                     break
 
+        driver.quit()
         da.saveChannelData(channelData)
+        channelData['videos'] = []

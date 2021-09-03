@@ -84,3 +84,4 @@ class videoScraper:
 
         driver.quit()
         da.saveVideoData(videoData)
+        videoData['comments'] = []
