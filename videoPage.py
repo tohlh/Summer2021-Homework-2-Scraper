@@ -37,7 +37,6 @@ class videoScraper:
         
         # Video info
         title = soup.find('meta', property='og:title')
-        description = driver.find_element_by_xpath('//*[@id="description"]/yt-formatted-string').text
         videoThumbnail = soup.find('meta', property="og:image")
         interactionCount = soup.find('meta', itemprop='interactionCount')
         datePublished = soup.find('meta', itemprop='datePublished')
