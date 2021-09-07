@@ -31,7 +31,7 @@ class videoScraper:
         driver = webdriver.Chrome('./chromedriver', options=chrome_options)
         driver.get(baseUrl)
         driver.execute_script('window.scrollTo(1, 500);')
-        time.sleep(2)
+        time.sleep(5)
         driver.execute_script('window.scrollTo(1, 10000);')
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         
@@ -68,8 +68,8 @@ class videoScraper:
         videoData['description'] = description_formatted.get_text()
 
         # Comments
-        driver.execute_script('window.scrollTo(1, 20000);')
-        time.sleep(2)
+        driver.execute_script('window.scrollTo(1, 40000);')
+        time.sleep(5)
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         commentThreads = soup.findAll('ytd-comment-thread-renderer', limit=5)
         for x in commentThreads:
