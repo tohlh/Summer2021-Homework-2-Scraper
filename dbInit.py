@@ -45,7 +45,7 @@ def createTables():
         joinedDate TIMESTAMPTZ NOT NULL,
         totalViews INT8 NOT NULL,
         subscriberCount TEXT NOT NULL,
-        videos TEXT []); '''
+        videos TEXT [] NOT NULL); '''
     cursor.execute(create_table_query)
 
     create_table_query = '''CREATE TABLE videoqueue
