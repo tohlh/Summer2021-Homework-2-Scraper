@@ -43,7 +43,7 @@ class adapter:
         self.connection.commit()
 
     def getUnscrapedChannel(self):
-        search_query = 'SELECT id FROM channelqueue WHERE scraped=False LIMIT 1;'
+        search_query = 'SELECT id FROM channelqueue WHERE scraped=False ORDER BY random() LIMIT 1;'
         self.cursor.execute(search_query)
         result = self.cursor.fetchone()
         if result == None:
